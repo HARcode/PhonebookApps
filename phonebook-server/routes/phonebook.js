@@ -50,56 +50,60 @@ router.post("/search", (req, res) => {
   });
 });
 
-router.post("/"), (req,res,next) => {
-    const {name, phoneNumber} = req.body;
-    let response = {
+//add
+router.post("/", (req, res, next) => {
+  const { name, phoneNumber } = req.body;
+  let response = {
+    status: true,
+    message: `${name} have benn added to phonebook`
+  };
+
+  let phoneBooks = new Phonebook({ name, phoneNumber });
+
+  phoneBooks
+    .save()
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(err => {
+      response.status = false;
+      response.message = "Cannot add Phonebook";
+      res.json(response);
+    });
+});
+
+// edit
+router.put("/:id", (req, res) => {
+  Phonebook.findByIdAndUpdate(req.params.id, req.body, (err, response) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).json({
         status: true,
-        message: `${name} have benn added to phonebook`
+        message: "Data have been updated",
+        id: req.params.id,
+        name: req.body.name,
+        phoneNumber: req.body.phoneNumber
+      });
     }
+  });
+});
 
-    let phoneBooks = new Phonebook({name, phoneNumber})
-
-    phoneBooks.save().then(data => {
-        res.status(200).json(data)
-        .catch(err => {
-            response.status.false,
-            response.message = "Can't not added Phonebook"
-        })
-    })
-}
-
-router.put("/:id",(req, res)=> {
-    Phonebook.findByIdAndUpdate(req.params.id, req.body, (err,response)=> {
-        if(err){
-            console.log(err);
-            
-        }else{
-            res.status(200).json({
-                status:true,
-                message:"data have been update",
-                id: req.body._id,
-                name: req.body.name,
-                phoneNumber: req.body.phoneNumber
-            })
-        }
-    })
-})
-
-router.delete("/:id",(req,res) => {
-    Phonebook.findByIdAndDelete(req.params.id, req.body, (err,resposnse)=> {
-        if(err){
-            console.log(err);
-            
-        }else{
-            res.status(201).json({
-                status:true,
-                message: "data have been delete",
-                id: req.body._id,
-                name: req.body.name,
-                phoneNumber: req.body.phoneNumber
-            })
-        }
-    })
-})
+// delete
+router.delete("/:id", (req, res) => {
+  Phonebook.findByIdAndDelete(req.params.id, (err, docs) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(201).json({
+        status: true,
+        message: `${docs.name} have been deleted from phonebook"`,
+        id: req.params.id,
+        name: docs.name,
+        phoneNumber: docs.phoneNumber
+      });
+    }
+  });
+});
 
 module.exports = router;
