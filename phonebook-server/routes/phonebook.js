@@ -57,7 +57,33 @@ router.post("/"), (req,res,next) => {
         message: `${name} have benn added to phonebook`
     }
 
-    
+    let phoneBooks = new Phonebook({name, phoneNumber})
+
+    phoneBooks.save().then(data => {
+        res.status(200).json(data)
+        .catch(err => {
+            response.status.false,
+            response.message = "Can't not added Phonebook"
+        })
+    })
 }
+
+router.put("/:id",(req, res)=> {
+    Phonebook.findByIdAndUpdate(req.params.id, req.body, (err,response)=> {
+        if(err){
+            console.log(err);
+            
+        }else{
+            res.status(200).json({
+                status:true,
+                message:"data have been update",
+                id: req.body._id,
+                name: req.body.name,
+                phoneNumber: req.body.phoneNumber
+            })
+        }
+    })
+})
+
 
 module.exports = router;
