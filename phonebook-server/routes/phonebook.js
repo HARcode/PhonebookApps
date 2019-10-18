@@ -85,5 +85,21 @@ router.put("/:id",(req, res)=> {
     })
 })
 
+router.delete("/:id",(req,res) => {
+    Phonebook.findByIdAndDelete(req.params.id, req.body, (err,resposnse)=> {
+        if(err){
+            console.log(err);
+            
+        }else{
+            res.status(201).json({
+                status:true,
+                message: "data have been delete",
+                id: req.body._id,
+                name: req.body.name,
+                phoneNumber: req.body.phoneNumber
+            })
+        }
+    })
+})
 
 module.exports = router;
