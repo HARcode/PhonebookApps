@@ -81,7 +81,6 @@ export const editDataRedux = (id, name, phoneNumber) => ({
 });
 export const editData = (id, name, phoneNumber) => {
   return dispatch => {
-    dispatch => {
       dispatch(editDataRedux(id, name, phoneNumber));
       return request
         .put(`${id}`, { name, phoneNumber })
@@ -93,7 +92,6 @@ export const editData = (id, name, phoneNumber) => {
           dispatch(editDataFailure());
         });
     };
-  };
 };
 
 //end put edit
@@ -154,6 +152,7 @@ export const searchData = (name, phoneNumber) => {
       });
   };
 };
+
 export const showEdit = (id, index) => ({ type: "EDIT_ON", id, index });
 
 export const hideEdit = (id, index) => ({ type: "EDIT_OFF", id, index });
