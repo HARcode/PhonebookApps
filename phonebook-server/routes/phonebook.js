@@ -55,7 +55,7 @@ router.post("/", (req, res, next) => {
   const { name, phoneNumber } = req.body;
   let response = {
     status: true,
-    message: `${name} have benn added to phonebook`
+    message: `${name} have been added to phonebook`
   };
 
   let phoneBooks = new Phonebook({ name, phoneNumber });
