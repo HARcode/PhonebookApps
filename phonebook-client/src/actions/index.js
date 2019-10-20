@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:3001/api/phonebook/';
 
 const request = axios.create({
     baseURL: API_URL,
-    timeout:1000
+    timeout: 1000
 })
 
 //start Loaditem from database
@@ -20,42 +20,42 @@ export const loadPhonebooksFailure = () => ({
 export const loadPhonebooks = () => {
     return dispatch => {
         return request.get()
-        .then(response => {
-            dispatch(loadPhonebooksSuccess(response.data));
-        }).catch(err => {
-            console.log(err);
-            dispatch(loadPhonebooksFailure())
-        })
+            .then(response => {
+                dispatch(loadPhonebooksSuccess(response.data));
+            }).catch(err => {
+                console.log(err);
+                dispatch(loadPhonebooksFailure())
+            })
     }
 }
 //end LoadItem
 
 //star post data
 export const addDataSuccess = (phonebooks) => ({
-    type:'ADD_STORE_SUCCESS',
+    type: 'ADD_STORE_SUCCESS',
     phonebooks
 })
 
 export const addDataFailure = () => ({
     type: 'ADD_STORE_FAILURE',
-    
+
 })
 
-export const addDataRedux = ( name, phoneNumber) => ({
+export const addDataRedux = (name, phoneNumber) => ({
     type: 'ADD_STORE',
     id, name, phoneNumber
 })
 
-export const addStore = ( name, phoneNumber) => {
+export const addStore = (name, phoneNumber) => {
     return dispatch => {
         dispatch(addDataRedux(name, phoneNumber))
-        return request.post({name, phoneNumber})
-        .then(result => {
-            dispatch(addDataSuccess(result.data))
-        })
-        .catch(err => {
-            dispatch(addDataFailure(err))
-        })
+        return request.post({ name, phoneNumber })
+            .then(result => {
+                dispatch(addDataSuccess(result.data))
+            })
+            .catch(err => {
+                dispatch(addDataFailure(err))
+            })
     }
 }
 //End Post Add
@@ -72,19 +72,19 @@ export const editDataFailure = (id) => ({
 })
 export const editDataRedux = (id, name, phoneNumber) => ({
     type: 'EDIT_DATA',
-    id,name,phoneNumber
+    id, name, phoneNumber
 })
 export const editData = (id, name, phoneNumber) => {
     return dispatch => {
         dispatch => {
             dispatch(editDataRedux(id, name, phoneNumber));
-            return request.put(`${id}`, {name,phoneNumber})
-            .then(response => {
-                dispatch(editDataSuccess(response.data));
-            }).catch(err => {
-                console.log(err);
-                dispatch(editDataFailure());
-            })
+            return request.put(`${id}`, { name, phoneNumber })
+                .then(response => {
+                    dispatch(editDataSuccess(response.data));
+                }).catch(err => {
+                    console.log(err);
+                    dispatch(editDataFailure());
+                })
         }
     }
 }
@@ -110,12 +110,37 @@ export const deletedData = (id) => {
     return dispatch => {
         dispatch(deletedDataRedux(id))
         return request.delete(`${id}`)
-        .then(result => {
-            dispatch(deletedDataSuccess(result.data))
-        }).catch(err => {
-            console.log(err);
-            dispatch(deletedDataFailure(id))
-        })
+            .then(result => {
+                dispatch(deletedDataSuccess(result.data))
+            }).catch(err => {
+                console.log(err);
+                dispatch(deletedDataFailure(id))
+            })
     }
 }
 //end deleted 
+
+//start search
+export const searchDataSuccess = (phonebooks) => {
+    type: 'SEARCH_DATA_SUCCESS',
+        phonebooks
+}
+export const searchDataFailure = () => {
+    type: 'SEARCH_DATA_FAILURE'
+}
+export const searchDataRedux = (name, phoneNumber) => {
+    type: 'SEARCH_DATA',
+    name, phoneNumber
+}
+export const searchData = (name, phoneNumber) {
+    return dispatch => {
+        dispatch(searchDataRedux(name, phoneNumber));
+        return request.post(`${search}`, {name, phoneNumber})
+        .then (result => {
+            dispatch(searchDataSuccess(result.data));
+        }).catch(err => {
+            console.log(err);
+            dispatch(searchDataFailure());
+        })
+    }
+}
