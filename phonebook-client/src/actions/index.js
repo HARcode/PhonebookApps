@@ -76,16 +76,14 @@ export const editDataRedux = (id, name, phoneNumber) => ({
 })
 export const editData = (id, name, phoneNumber) => {
     return dispatch => {
-        dispatch => {
-            dispatch(editDataRedux(id, name, phoneNumber));
-            return request.put(`${id}`, { name, phoneNumber })
-                .then(response => {
-                    dispatch(editDataSuccess(response.data));
-                }).catch(err => {
-                    console.log(err);
-                    dispatch(editDataFailure());
-                })
-        }
+        dispatch(editDataRedux(id, name, phoneNumber));
+        return request.put(`${id}`, { name, phoneNumber })
+            .then(response => {
+                dispatch(editDataSuccess(response.data));
+            }).catch(err => {
+                console.log(err);
+                dispatch(editDataFailure());
+            })
     }
 }
 
@@ -130,17 +128,17 @@ export const searchDataFailure = () => {
 }
 export const searchDataRedux = (name, phoneNumber) => {
     type: 'SEARCH_DATA',
-    name, phoneNumber
+        name, phoneNumber
 }
 export const searchData = (name, phoneNumber) {
     return dispatch => {
         dispatch(searchDataRedux(name, phoneNumber));
-        return request.post(`${search}`, {name, phoneNumber})
-        .then (result => {
-            dispatch(searchDataSuccess(result.data));
-        }).catch(err => {
-            console.log(err);
-            dispatch(searchDataFailure());
-        })
+        return request.post(`${search}`, { name, phoneNumber })
+            .then(result => {
+                dispatch(searchDataSuccess(result.data));
+            }).catch(err => {
+                console.log(err);
+                dispatch(searchDataFailure());
+            })
     }
 }
