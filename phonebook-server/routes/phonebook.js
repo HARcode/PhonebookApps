@@ -13,12 +13,11 @@ router.get("/", (req, res) => {
     .then(result => {
       if (limit == "all") limit = result[0].count;
       limit = Number(limit || result[0].count);
-      const numOfPages = Math.ceil((result[0].count || 0) / limit);
       if (skip >= result[0].count) skip -= limit;
       aggregation
         .getData(limit, skip)
         .then(data => {
-          res.status(200).json({ numOfPages, data });
+          res.status(200).json(data);
         })
         .catch(err => console.error(err));
     })
@@ -32,11 +31,9 @@ router.post("/search", (req, res) => {
   let skip = Number(req.header("Skip") || 0);
 
   aggregation.countData(filter).then(result => {
-    let numOfPages = 0;
     if (result[0]) {
       if (limit == "all") limit = result[0].count;
       limit = Number(limit || result[0].count);
-      numOfPages = Math.ceil((result[0].count || 0) / limit);
       if (skip >= result[0].count) skip -= limit;
     }
     limit = Number(limit);
@@ -44,7 +41,7 @@ router.post("/search", (req, res) => {
     aggregation
       .getData(limit, skip, filter)
       .then(data => {
-        res.status(200).json({ numOfPages, data });
+        res.status(200).json(data);
       })
       .catch(err => console.error(err));
   });
