@@ -15,7 +15,11 @@ router.get("/", (req, res) => {
 
 // search
 router.post("/search", (req, res) => {
-  const filter = Object.keys(req.body).map(JSON.parse)[0];
+  const { name, phoneNumber } = req.body;
+  const filter = {
+    name: { $regex: name, $options: "i" },
+    phoneNumber: { $regex: phoneNumber, $options: "i" }
+  };
   Phonebook.aggregate()
     .match(filter)
     .sort("name")
@@ -37,7 +41,7 @@ router.post("/", (req, res, next) => {
   phoneBooks
     .save()
     .then(() => {
-      res.redirect("/api/phonebook")
+      res.redirect("/api/phonebook");
     })
     .catch(err => {
       response.status = false;

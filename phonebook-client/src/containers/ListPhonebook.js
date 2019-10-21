@@ -13,40 +13,43 @@ class ListPhonebook extends React.Component {
   render() {
     const { phonebooks, showEdit, showDelete } = this.props;
     return (
-      <div className="table-responsive" style={{maxHeight: "60vh", overflow: "auto"}}>
-      <table className="table table-striped table-sm">
-        <thead className="thead-dark">
-          <tr>
-            <th scope="col" className="th-sm">
-              #
-            </th>
-            <th scope="col" className="th-sm">
-              Name
-            </th>
-            <th scope="col" className="th-sm">
-              Phone
-            </th>
-            <th scope="col" className="th-sm">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {phonebooks.map((phonebook, index) =>
-            phonebook.editOn ? (
-              <PhonebookItemEdit {...phonebook} key={index} index={index} />
-            ) : (
-              <PhonebookItem
-                {...phonebook}
-                key={index}
-                index={index}
-                onEdit={id => showEdit(id, index)}
-                onDelete={id => showDelete(id, phonebook.name)}
-              />
-            )
-          )}
-        </tbody>
-      </table>
+      <div
+        className="table-responsive"
+        style={{ maxHeight: "60vh", overflow: "auto" }}
+      >
+        <table className="table table-striped table-sm">
+          <thead className="thead-dark">
+            <tr>
+              <th scope="col" className="th-sm">
+                #
+              </th>
+              <th scope="col" className="th-sm">
+                Name
+              </th>
+              <th scope="col" className="th-sm">
+                Phone
+              </th>
+              <th scope="col" className="th-sm">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {phonebooks.map((phonebook, index) =>
+              phonebook.editOn ? (
+                <PhonebookItemEdit {...phonebook} key={index} index={index} />
+              ) : (
+                <PhonebookItem
+                  {...phonebook}
+                  key={index}
+                  index={index}
+                  onEdit={id => showEdit(id, index)}
+                  onDelete={id => showDelete(id, phonebook.name)}
+                />
+              )
+            )}
+          </tbody>
+        </table>
       </div>
     );
   }

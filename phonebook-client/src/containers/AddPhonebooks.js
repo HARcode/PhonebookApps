@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addStore } from '../actions/index';
 import { Manager, Reference, Popper } from "react-popper";
-import swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 class AddPhonebooks extends Component {
     constructor(props) {
@@ -42,27 +42,29 @@ class AddPhonebooks extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        if (
-            (this.props.name === this.state.name &&
-                this.props.phoneNumber === this.state.phoneNumber) ||
-            !this.state.isValid
-        ) {
+        if (this.state.name.trim().length === 0 || this.state.phoneNumber.trim().length === 0) {
             Swal.fire({
                 title: "Phonebook is not added.",
                 timer: 2000,
                 type: "warning",
                 showConfirmButton: false
             });
-            this.props.onCancel(e);
+            this.handleButtonCancel();
         } else {
-            this.props.onSave(this.state.name, this.state.phoneNumber);
+            this.props.addStore(this.state.name, this.state.phoneNumber);
+            Swal.fire({
+                title: `${this.state.name} has been added to phonebook`,
+                time: 2000,
+                type: "success",
+                showConfirmButton: true
+            })
+            this.setState({ name: '', phoneNumber: ''})
         }
     }
 
     render() {
         let { index, onCancel } = this.props;
         if (this.state.added) {
-
             return (
                 <div className="mt-3">
                     <div className="card">
@@ -72,18 +74,15 @@ class AddPhonebooks extends Component {
                         <div className="card-body">
                             <form className="form-inline" onSubmit={this.handleSubmit}>
                                 <div className="form-check mb-2 mr-sm-2">
-                                    <label className="form-check-label mr-3" htmlFor="inlineFormCheck">
-                                        <h6>name</h6>
-                                    </label>
                                     <input type="text" className="form-control mb-2 mr-sm-2" id="inlineFormInputName2"
-                                        placeholder="name" name="name" value={this.state.name} onChange={this.handleNameChange} />
+                                        placeholder="Name" name="Name" value={this.state.name} onChange={this.handleNameChange} required />
                                 </div>
                                 <Manager>
                                     <Reference>
                                         {({ ref }) => (
                                                 <input
                                                     type="text"
-                                                    className="form-control"
+                                                    className="form-control  mb-3 mr-sm-3"
                                                     size="8"
                                                     value={this.state.phoneNumber}
                                                     onChange={this.handlePhoneChange}
@@ -109,7 +108,7 @@ class AddPhonebooks extends Component {
 
                                 <div className="form-check mb-2 mr-sm-2">
                                     <button type="submit" className="btn btn-success mb-2" ><i className="fa fa-check-circle"></i> Submit</button>
-                                    <button type="button" className="btn text-danger bg-transparent mr-2" onClick={onCancel}><i className="fa fa-ban"></i> Cancle</button>
+                                    <button type="button" className="btn text-danger bg-transparent mr-2" onClick={this.handleButtonCancel}><i className="fa fa-ban"></i> Cancle</button>
                                 </div>
                             </form>
                         </div>
@@ -131,4 +130,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     null,
     mapDispatchToProps
-)(addStore)
+)(AddPhonebooks)

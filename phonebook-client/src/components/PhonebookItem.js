@@ -17,6 +17,7 @@ function PhonebookItem({
         <td scope="row" onDoubleClick={() => onEdit(_id)}>
           {index + 1}
         </td>
+        {/* doubleclick to show edit form */}
         <td onDoubleClick={() => onEdit(_id)}>{name}</td>
         <td onDoubleClick={() => onEdit(_id)}>{phoneNumber}</td>
         <td onDoubleClick={() => onEdit(_id)}>

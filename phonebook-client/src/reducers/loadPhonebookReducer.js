@@ -1,12 +1,9 @@
+import addPbProperties from "../helpers/addPbProperties";
+
 export function loadPhonebookReducer(state = [], action) {
   switch (action.type) {
     case "LOAD_PHONEBOOKS_SUCCESS":
-      return action.phonebooks.map(item => {
-        item.sent = true;
-        item.isNew = false;
-        item.editOn = false;
-        return item;
-      });
+      return action.phonebooks.map(addPbProperties);
     default:
       return state;
   }
