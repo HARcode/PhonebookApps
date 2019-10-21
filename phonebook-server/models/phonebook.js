@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const pbSchema = new Schema({
+  id: {
+    type: Number,
+    default: Date.now()
+  },
   name: {
     type: String,
     required: true
