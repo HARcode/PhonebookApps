@@ -101,7 +101,7 @@ export const editData = (id, name, phoneNumber) => {
 
 //start delete deleted
 export const deletedDataSuccess = phonebooks => ({
-  type: "DELETED_STORE_SUCCESS",
+  type: "DELETE_STORE_SUCCESS",
   phonebooks
 });
 
