@@ -32,10 +32,10 @@ export const loadPhonebooks = () => {
 //end LoadItem
 
 //star post data
-export const addDataSuccess = (id, phonebooks) => ({
+export const addDataSuccess = (id, phonebook) => ({
   type: "ADD_STORE_SUCCESS",
   id,
-  phonebooks
+  phonebook
 });
 
 export const addDataFailure = id => ({
@@ -57,7 +57,9 @@ export const addStore = (name, phoneNumber) => {
     return request
       .post("", { id, name, phoneNumber })
       .then(result => {
-        dispatch(addDataSuccess(id, result.data));
+        let response = result.data;
+        if (response.status) dispatch(addDataSuccess(id, response.data));
+        else dispatch(addDataFailure(od))
       })
       .catch(err => {
         dispatch(addDataFailure(id));
