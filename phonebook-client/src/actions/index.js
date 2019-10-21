@@ -127,9 +127,8 @@ export const deletedData = id => {
 //end deleted
 
 //start search
-export const searchDataSuccess = (phonebooks) => ({
-  type: "SEARCH_DATA_SUCCESS",
-   phonebooks
+export const searchDataSuccess = phonebooks => ({
+  type: "SEARCH_DATA_SUCCESS", phonebooks;
 });
 export const searchDataFailure = () => ({
   type: "SEARCH_DATA_FAILURE"
