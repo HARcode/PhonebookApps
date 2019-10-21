@@ -5,42 +5,44 @@ import { searchData } from "../actions";
 class SearchPhonebook extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: "", phoneNumber: "" };
+    this.state = { value: "" };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
   }
 
   handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ value: e.target.value });
   }
 
   handleKeyUp() {
-    this.props.searchData(this.state.name, this.state.phoneNumber);
+    let regExpPhone = new RegExp("^([0-9])+$");
+    let value = this.state.value;
+    let values = value.split(" ");
+    values = values.filter(value => value.length > 0);
+    let phone = values.filter(value => value.match(regExpPhone)).join('');
+    let name = values.filter(value => !value.match(regExpPhone)).join(' ');
+    this.props.searchData(name, phone);
   }
 
   render() {
     return (
       <form className="form-inline">
-        <input
-          type="text"
-          name="name"
-          placeholder="Search name"
-          value={this.state.name}
-          size="13"
-          onChange={this.handleChange}
-          className="form-control mb-2 mr-sm-2"
-          onKeyUp={this.handleKeyUp}
-        />
-        <input
-          type="text"
-          name="phoneNumber"
-          placeholder="Search phone number"
-          value={this.state.phoneNumber}
-          size="13"
-          onChange={this.handleChange}
-          className="form-control mb-2 mr-sm-2"
-          onKeyUp={this.handleKeyUp}
-        />
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <div className="input-group-text">
+              <i className="fa fa-search"></i>
+            </div>
+          </div>
+          <input
+            type="text"
+            placeholder="Search"
+            value={this.state.value}
+            size="15"
+            onChange={this.handleChange}
+            className="form-control mr-sm-2"
+            onKeyUp={this.handleKeyUp}
+          />
+        </div>
       </form>
     );
   }

@@ -59,7 +59,7 @@ export const addStore = (name, phoneNumber) => {
       .then(result => {
         let response = result.data;
         if (response.status) dispatch(addDataSuccess(id, response.data));
-        else dispatch(addDataFailure(od))
+        else dispatch(addDataFailure(id))
       })
       .catch(err => {
         dispatch(addDataFailure(id));
@@ -102,8 +102,9 @@ export const editData = (id, name, phoneNumber) => {
 //end put edit
 
 //start delete deleted
-export const deletedDataSuccess = phonebooks => ({
+export const deletedDataSuccess = (id, phonebooks) => ({
   type: "DELETE_STORE_SUCCESS",
+  id,
   phonebooks
 });
 
@@ -121,7 +122,7 @@ export const deletedData = id => {
     return request
       .delete(id)
       .then(result => {
-        dispatch(deletedDataSuccess(result.data));
+        dispatch(deletedDataSuccess(id,result.data));
       })
       .catch(err => {
         console.log(err);

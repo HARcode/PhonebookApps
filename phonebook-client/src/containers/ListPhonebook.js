@@ -15,9 +15,9 @@ class ListPhonebook extends React.Component {
     return (
       <div
         className="table-responsive"
-        style={{ maxHeight: "60vh", overflow: "auto" }}
+        style={{ maxHeight: "50vh", overflow: "auto" }}
       >
-        <table className="table table-striped table-sm">
+        <table className="table table-fix-head table-striped table-sm">
           <thead className="thead-dark">
             <tr>
               <th scope="col" className="th-sm">
@@ -84,17 +84,19 @@ const mapDispatchToProps = dispatch => ({
       .then(result => {
         if (result.value) {
           dispatch(deletedData(id));
-          Swal.fire(
-            "Deleted",
-            `${name} has been deleted from phonebook`,
-            "success"
-          );
+          Swal.fire({
+            title: "Deleted",
+            text: `${name} has been deleted from phonebook`,
+            type: "success",
+            timer: 2000
+          });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          swalWithBootstrapButtons.fire(
-            "Cancelled",
-            "Your contact is safe :)",
-            "error"
-          );
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Your contact is safe :)",
+            type: "error",
+            timer: 2000
+          });
         }
       });
   }

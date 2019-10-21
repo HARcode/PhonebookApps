@@ -54,7 +54,7 @@ class AddPhonebooks extends Component {
             this.props.addStore(this.state.name, this.state.phoneNumber);
             Swal.fire({
                 title: `${this.state.name} has been added to phonebook`,
-                time: 2000,
+                timer: 2000,
                 type: "success",
                 showConfirmButton: true
             })
@@ -66,7 +66,7 @@ class AddPhonebooks extends Component {
         let { index, onCancel } = this.props;
         if (this.state.added) {
             return (
-                <div className="mt-3">
+                <div className="my-1">
                     <div className="card">
                         <div className="card-header">
                             <strong>Add Form</strong>
@@ -75,7 +75,7 @@ class AddPhonebooks extends Component {
                             <form className="form-inline" onSubmit={this.handleSubmit}>
                                 <div className="form-check mb-2 mr-sm-2">
                                     <input type="text" className="form-control mb-2 mr-sm-2" id="inlineFormInputName2"
-                                        placeholder="Name" name="Name" value={this.state.name} onChange={this.handleNameChange} required />
+                                        placeholder="Name" name="Name" value={this.state.name} onChange={this.handleNameChange} required size="10" />
                                 </div>
                                 <Manager>
                                     <Reference>
@@ -83,7 +83,7 @@ class AddPhonebooks extends Component {
                                                 <input
                                                     type="text"
                                                     className="form-control  mb-3 mr-sm-3"
-                                                    size="8"
+                                                    size="10"
                                                     value={this.state.phoneNumber}
                                                     onChange={this.handlePhoneChange}
                                                     required={true}
@@ -107,7 +107,7 @@ class AddPhonebooks extends Component {
                                 </Manager>
 
                                 <div className="form-check mb-2 mr-sm-2">
-                                    <button type="submit" className="btn btn-success mb-2" ><i className="fa fa-check-circle"></i> Submit</button>
+                                    <button type="submit" className="btn text-success bg-transparent mr-2" ><i className="fa fa-check-circle"></i> Submit</button>
                                     <button type="button" className="btn text-danger bg-transparent mr-2" onClick={this.handleButtonCancel}><i className="fa fa-ban"></i> Cancle</button>
                                 </div>
                             </form>
@@ -117,7 +117,7 @@ class AddPhonebooks extends Component {
             )
         } else {
             return (
-                <button type="button" className="btn btn-success mb-2 mt-3" onClick={this.handleButtonAdd}><i className='fa fa-plus'></i> Add</button>
+                <button type="button" className="btn btn-success my-1" onClick={this.handleButtonAdd}><i className='fa fa-plus'></i> Add</button>
             )
         }
     }

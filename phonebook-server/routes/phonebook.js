@@ -7,6 +7,7 @@ const aggregation = new DataAggregation(Phonebook);
 /* GET list. */
 router.get("/", (req, res) => {
   Phonebook.aggregate()
+    .collation({ locale: "id" })
     .sort("name")
     .exec()
     .then(docs => res.status(200).json(docs))
@@ -22,6 +23,7 @@ router.post("/search", (req, res) => {
   };
   Phonebook.aggregate()
     .match(filter)
+    .collation({ locale: "id" })
     .sort("name")
     .exec()
     .then(docs => res.status(200).json(docs))
