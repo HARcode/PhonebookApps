@@ -20,7 +20,7 @@ export function addPhonebookReducer(state = [], action) {
       ];
       return newState.sort(compareObjects);
     case "ADD_STORE_SUCCESS":
-      return action.phonebooks.map(item => {
+      return state.map(item => {
         if (item.id === action.id) item.isNew = true;
         else item.isNew = false;
         item.editOn = false;

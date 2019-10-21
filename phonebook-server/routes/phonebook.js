@@ -40,8 +40,9 @@ router.post("/", (req, res, next) => {
 
   phoneBooks
     .save()
-    .then(() => {
-      res.redirect("/api/phonebook");
+    .then(doc => {
+      response.data = doc;
+      res.json(response);
     })
     .catch(err => {
       response.status = false;
