@@ -19,7 +19,7 @@ export const loadPhonebooksFailure = () => ({
 export const loadPhonebooks = () => {
   return dispatch => {
     return request
-      .get()
+      .get("")
       .then(response => {
         dispatch(loadPhonebooksSuccess(response.data));
       })
@@ -32,16 +32,18 @@ export const loadPhonebooks = () => {
 //end LoadItem
 
 //star post data
-export const addDataSuccess = phonebooks => ({
+export const addDataSuccess = (id, phonebooks) => ({
   type: "ADD_STORE_SUCCESS",
+  id,
   phonebooks
 });
 
-export const addDataFailure = () => ({
-  type: "ADD_STORE_FAILURE"
+export const addDataFailure = id => ({
+  type: "ADD_STORE_FAILURE",
+  id
 });
 
-export const addDataRedux = (name, phoneNumber) => ({
+export const addDataRedux = (id, name, phoneNumber) => ({
   type: "ADD_STORE",
   id,
   name,
@@ -49,15 +51,16 @@ export const addDataRedux = (name, phoneNumber) => ({
 });
 
 export const addStore = (name, phoneNumber) => {
+  let id = Date.now();
   return dispatch => {
-    dispatch(addDataRedux(name, phoneNumber));
+    dispatch(addDataRedux(id, name, phoneNumber));
     return request
-      .post({ name, phoneNumber })
+      .post("", { id, name, phoneNumber })
       .then(result => {
-        dispatch(addDataSuccess(result.data));
+        dispatch(addDataSuccess(id, result.data));
       })
       .catch(err => {
-        dispatch(addDataFailure(err));
+        dispatch(addDataFailure(id));
       });
   };
 };
@@ -81,29 +84,29 @@ export const editDataRedux = (id, name, phoneNumber) => ({
 });
 export const editData = (id, name, phoneNumber) => {
   return dispatch => {
-      dispatch(editDataRedux(id, name, phoneNumber));
-      return request
-        .put(`${id}`, { name, phoneNumber })
-        .then(response => {
-          dispatch(editDataSuccess(response.data));
-        })
-        .catch(err => {
-          console.log(err);
-          dispatch(editDataFailure());
-        });
-    };
+    dispatch(editDataRedux(id, name, phoneNumber));
+    return request
+      .put(id, { name, phoneNumber })
+      .then(response => {
+        dispatch(editDataSuccess(response.data));
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(editDataFailure(id));
+      });
+  };
 };
 
 //end put edit
 
 //start delete deleted
 export const deletedDataSuccess = phonebooks => ({
-  type: "DELETED_STORE,SUCCESS",
+  type: "DELETED_STORE_SUCCESS",
   phonebooks
 });
 
 export const deletedDataFailure = () => ({
-  type: "DELETE_STORE_SUCCESS"
+  type: "DELETE_STORE_FAILURE"
 });
 
 export const deletedDataRedux = id => ({
@@ -114,7 +117,7 @@ export const deletedData = id => {
   return dispatch => {
     dispatch(deletedDataRedux(id));
     return request
-      .delete(`${id}`)
+      .delete(id)
       .then(result => {
         dispatch(deletedDataSuccess(result.data));
       })
@@ -128,7 +131,8 @@ export const deletedData = id => {
 
 //start search
 export const searchDataSuccess = phonebooks => ({
-  type: "SEARCH_DATA_SUCCESS", phonebooks;
+  type: "SEARCH_DATA_SUCCESS",
+  phonebooks
 });
 export const searchDataFailure = () => ({
   type: "SEARCH_DATA_FAILURE"
@@ -142,7 +146,7 @@ export const searchData = (name, phoneNumber) => {
   return dispatch => {
     dispatch(searchDataRedux(name, phoneNumber));
     return request
-      .post(`${search}`, { name, phoneNumber })
+      .post(`search`, { name, phoneNumber })
       .then(result => {
         dispatch(searchDataSuccess(result.data));
       })
@@ -152,9 +156,24 @@ export const searchData = (name, phoneNumber) => {
       });
   };
 };
+//end search
+
+//start resend
+// export const resend = (id, name, phoneNumber) => {
+//   return dispatch => {
+//     dispatch(addDataRedux(id, name, phoneNumber));
+//     return request
+//       .post("", { name, message })
+//       .then(function(response) {
+//         dispatch(addDataSuccess(response.data));
+//       })
+//       .catch(function(error) {
+//         console.error(error);
+//         dispatch(addDataFailure(id));
+//       });
+//   };
+// };
+// end resend
 
 export const showEdit = (id, index) => ({ type: "EDIT_ON", id, index });
-
 export const hideEdit = (id, index) => ({ type: "EDIT_OFF", id, index });
-
-export const showDelete = (id, name) => ({ type: "DELETE", id, name });
