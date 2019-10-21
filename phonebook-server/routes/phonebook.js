@@ -6,61 +6,38 @@ const aggregation = new DataAggregation(Phonebook);
 
 /* GET list. */
 router.get("/", (req, res) => {
-  let limit = req.header("Limit");
-  let skip = Number(req.header("Skip") || 0);
-  aggregation
-    .countData()
-    .then(result => {
-      if (limit == "all") limit = result[0].count;
-      limit = Number(limit || result[0].count);
-      if (skip >= result[0].count) skip -= limit;
-      aggregation
-        .getData(limit, skip)
-        .then(data => {
-          res.status(200).json(data);
-        })
-        .catch(err => console.error(err));
-    })
+  Phonebook.aggregate()
+    .sort("name")
+    .exec()
+    .then(docs => res.status(200).json(docs))
     .catch(err => console.error(err));
 });
 
 // search
 router.post("/search", (req, res) => {
   const filter = Object.keys(req.body).map(JSON.parse)[0];
-  let limit = req.header("Limit");
-  let skip = Number(req.header("Skip") || 0);
-
-  aggregation.countData(filter).then(result => {
-    if (result[0]) {
-      if (limit == "all") limit = result[0].count;
-      limit = Number(limit || result[0].count);
-      if (skip >= result[0].count) skip -= limit;
-    }
-    limit = Number(limit);
-
-    aggregation
-      .getData(limit, skip, filter)
-      .then(data => {
-        res.status(200).json(data);
-      })
-      .catch(err => console.error(err));
-  });
+  Phonebook.aggregate()
+    .match(filter)
+    .sort("name")
+    .exec()
+    .then(docs => res.status(200).json(docs))
+    .catch(err => console.error(err));
 });
 
 //add
 router.post("/", (req, res, next) => {
-  const { name, phoneNumber } = req.body;
+  const { id, name, phoneNumber } = req.body;
   let response = {
     status: true,
     message: `${name} have been added to phonebook`
   };
 
-  let phoneBooks = new Phonebook({ name, phoneNumber });
+  let phoneBooks = new Phonebook({ id, name, phoneNumber });
 
   phoneBooks
     .save()
-    .then(data => {
-      res.status(200).json(data);
+    .then(() => {
+      res.redirect("/api/phonebook")
     })
     .catch(err => {
       response.status = false;
