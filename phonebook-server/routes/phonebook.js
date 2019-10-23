@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Phonebook = require("../models/phonebook");
-const DataAggregation = require("../helper/DataAggregation");
-const aggregation = new DataAggregation(Phonebook);
 
 /* GET list. */
 router.get("/", (req, res) => {
@@ -35,7 +33,7 @@ router.post("/", (req, res, next) => {
   const { id, name, phoneNumber } = req.body;
   let response = {
     status: true,
-    message: `${name} have been added to phonebook`
+    message: `${name} has been added to phonebook`
   };
 
   let phoneBooks = new Phonebook({ id, name, phoneNumber });
@@ -61,7 +59,7 @@ router.put("/:id", (req, res) => {
     } else {
       res.status(200).json({
         status: true,
-        message: "Data have been updated",
+        message: "The contact has been updated",
         id: req.params.id,
         name: req.body.name,
         phoneNumber: req.body.phoneNumber
@@ -78,7 +76,7 @@ router.delete("/:id", (req, res) => {
     } else {
       res.status(201).json({
         status: true,
-        message: `${docs.name} have been deleted from phonebook"`,
+        message: `${docs.name} has been deleted from phonebook`,
         id: req.params.id,
         name: docs.name,
         phoneNumber: docs.phoneNumber
