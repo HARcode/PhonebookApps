@@ -56,18 +56,11 @@ class AddPhonebooks extends Component {
       if (!this.state.isValid) this.setState({ phoneNumber: "" });
     } else {
       this.props.addStore(this.state.name, this.state.phoneNumber);
-      Swal.fire({
-        title: `${this.state.name} has been added to phonebook`,
-        timer: 2000,
-        type: "success",
-        showConfirmButton: true
-      });
       this.setState({ name: "", phoneNumber: "" });
     }
   }
 
   render() {
-    let { index, onCancel } = this.props;
     if (this.state.added) {
       return (
         <div className="my-1">
@@ -131,7 +124,7 @@ class AddPhonebooks extends Component {
                     className="btn text-danger bg-transparent mr-2"
                     onClick={this.handleButtonCancel}
                   >
-                    <i className="fa fa-ban"></i> Cancle
+                    <i className="fa fa-ban"></i> Cancel
                   </button>
                 </div>
               </form>
