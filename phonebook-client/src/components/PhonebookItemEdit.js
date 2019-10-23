@@ -47,7 +47,7 @@ export class PhonebookItemEdit extends Component {
     let { index, onCancel } = this.props;
     return (
       <tr>
-        <td scope="row">{index + 1}</td>
+        <td>{index + 1}</td>
         <td>
           <form onSubmit={this.handleSubmit}>
             <input
@@ -102,13 +102,12 @@ export class PhonebookItemEdit extends Component {
             >
               <i className="fa fa-check fa-lg"></i>
             </button>
-            <a
-              href=""
+            <button
               className="btn text-danger bg-transparent mr-2"
               onClick={onCancel}
             >
               <i className="fa fa-times fa-lg"></i>
-            </a>
+            </button>
           </form>
         </td>
       </tr>
