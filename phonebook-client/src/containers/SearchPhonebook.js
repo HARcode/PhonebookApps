@@ -17,10 +17,11 @@ class SearchPhonebook extends React.Component {
   handleKeyUp() {
     let regExpPhone = new RegExp("^([0-9])+$");
     let value = this.state.value;
+    value = value.replace(/[^a-zA-Z 0-9]+/g, "");
     let values = value.split(" ");
     values = values.filter(value => value.length > 0);
-    let phone = values.filter(value => value.match(regExpPhone)).join('');
-    let name = values.filter(value => !value.match(regExpPhone)).join(' ');
+    let phone = values.filter(value => value.match(regExpPhone)).join("");
+    let name = values.filter(value => !value.match(regExpPhone)).join(" ");
     this.props.searchData(name, phone);
   }
 
